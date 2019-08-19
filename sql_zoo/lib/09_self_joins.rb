@@ -223,19 +223,53 @@ def craiglockhart_to_sighthill
       trans_stops.name,
       routes_2.num, routes_2.company
     FROM
-      routes AS routes_1
+      stops AS stops_1
     INNER JOIN
-      routes AS trans_routes ON 
-        (routes_1.company = trans_routes.company AND routes_1.num = trans_routes.num)
+      routes AS routes_1 ON routes_1.stop_id = stops_1.id
     INNER JOIN
-      stops AS trans_stops ON trans_stops.id = trans_routes.stop_id
+      routes AS routes_1a ON
+        (routes_1a.company = routes_1.company AND routes_1a.num = routes_1.num)
     INNER JOIN
-      stops AS stops_1 ON stops_1.id = routes_1.stop_id
+      stops AS trans_stops ON routes_1a.stop_id = trans_stops.id
     INNER JOIN
-      SELECT
-    
+      routes AS routes_2a ON routes_2a.stop_id = trans_stops.id
+    INNER JOIN
+      routes AS routes_2 ON
+        (routes_2a.company = routes_2.company AND routes_2a.num = routes_2.num)
+    INNER JOIN
+      stops AS stops_2 ON routes_2.stop_id = stops_2.id
+    WHERE
+      stops_1.name = 'Craiglockhart' AND stops_2.name = 'Sighthill';
   SQL
 end
+
+# FROM
+#       routes AS routes_1
+#     INNER JOIN
+#       routes AS trans_routes ON 
+#         (routes_1.company = trans_routes.company AND routes_1.num = trans_routes.num)
+#     INNER JOIN
+#       stops AS trans_stops ON trans_stops.id = trans_routes.stop_id
+#     INNER JOIN
+#       stops AS stops_1 ON stops_1.id = routes_1.stop_id
+#     INNER JOIN
+#       SELECT
+#         *
+#       FROM
+#         routes AS routes_3
+#       INNER JOIN
+#         routes AS routes_4 ON 
+#         (routes_3.company = routes_4.company AND routes_3.num = routes_4.num)
+#       INNER JOIN
+#         stops AS stops_4 ON stops_4.id = routes_4.stop_id
+#       INNER JOIN
+#           routes AS routes_3 ON routes_3.stop_id = stops_3.id
+#       WHERE
+#         stops_4.name = 'Sighthill'
+#       AS routes_2 ON
+
+
+
 
       # WHERE
       # stops_1.name = 'Craiglockhart' AND trans_stops.name IN (
